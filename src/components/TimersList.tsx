@@ -30,37 +30,45 @@ export function TimersList() {
 
   const addNewTimer = () => {
     const newTimerId = uuid();
-    
-    setTimers({
-      ...timers,
+
+    setTimers(prevTimers => ({
+      ...prevTimers,
       [newTimerId]: {
         id: newTimerId,
         lastPausedWithSeconds: 0,
         lastStartedAt: new Date(),
         running: true,
       }
-    });
+    }));
   }
 
   const pauseTimer = (timer: ITimer) => {
-    setTimers({
-      ...timers,
+    setTimers(prevTimers => ({
+      ...prevTimers,
       [timer.id]: {
-        ...timers[timer.id],
+        ...prevTimers[timer.id],
         lastPausedWithSeconds: getElapsedSeconds(timer),
         running: false,
       }
-    });
+    }));
   }
 
   const resumeTimer = (timer: ITimer) => {
-    setTimers({
-      ...timers,
+    setTimers(prevTimers => ({
+      ...prevTimers,
       [timer.id]: {
-        ...timers[timer.id],
+        ...prevTimers[timer.id],
         lastStartedAt: new Date(),
         running: true,
       }
+    }));
+  }
+
+  const deleteTimer = (timer: ITimer) => {
+    setTimers(prevTimers => {
+      const newTimers = { ...prevTimers };
+      delete newTimers[timer.id];
+      return newTimers;
     });
   }
 
@@ -73,12 +81,12 @@ export function TimersList() {
           running={timer.running}
           onPause={() => pauseTimer(timer)}
           onResume={() => resumeTimer(timer)}
-          onDelete={() => null}
+          onDelete={() => deleteTimer(timer)}
         />
       ))}
 
       <button className={classes.addButton} onClick={addNewTimer}>
-       Add a new timer +
+        Add a new timer +
       </button>
     </div>
   );
@@ -103,11 +111,11 @@ const useStyles = createUseStyles({
     textAlign: "center",
     transition: "background 0.2s",
     "&:hover": {
-        background: "#d6d6d6",
+      background: "#d6d6d6",
     },
     "&:active": {
-        background: "#c2c2c2",
+      background: "#c2c2c2",
     }
-}
+  }
 
 });
