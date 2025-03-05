@@ -15,9 +15,11 @@ export const Timer: React.FC<TimerProps> = ({ elapsedSeconds, running, onPause, 
   const classes = useStyles();
 
   const formattedElapsedTime = useMemo(() => {
-    const minutes = Math.floor(elapsedSeconds / 60);
-    const secs = elapsedSeconds % 60;
-    return `${minutes}:${secs < 10 ? "0" : ""}${secs}`;
+    const hours = Math.floor(elapsedSeconds / 60 / 60).toString().padStart(2, "0");
+    const minutes = Math.floor(elapsedSeconds / 60).toString().padStart(2, "0");
+    const secs = (elapsedSeconds % 60).toString().padStart(2, "0");
+
+    return `${hours}:${minutes}:${secs}`;
   }, [elapsedSeconds]);
 
   return (
