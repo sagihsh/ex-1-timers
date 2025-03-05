@@ -2,6 +2,7 @@ import React, { useMemo } from "react";
 import { createUseStyles } from "react-jss";
 import playIcon from "../assets/play_icon.svg";
 import pauseIcon from "../assets/pause_icon.svg";
+import resetIcon from "../assets/refresh_icon.svg";
 import deleteIcon from "../assets/delete_icon.svg";
 
 type TimerProps = {
@@ -9,10 +10,11 @@ type TimerProps = {
   running: boolean,
   onPause: () => void,
   onResume: () => void,
+  onReset: () => void,
   onDelete: () => void,
 }
 
-export const Timer: React.FC<TimerProps> = ({ elapsedSeconds, running, onPause, onResume, onDelete }) => {
+export const Timer: React.FC<TimerProps> = ({ elapsedSeconds, running, onPause, onResume, onReset, onDelete }) => {
   const classes = useStyles();
 
   const formattedElapsedTime = useMemo(() => {
@@ -36,6 +38,13 @@ export const Timer: React.FC<TimerProps> = ({ elapsedSeconds, running, onPause, 
         >
 
           {running ? <img src={pauseIcon} /> : <img src={playIcon} />}
+        </button>
+
+        <button
+          className={classes.iconButton}
+          onClick={onReset}
+        >
+          <img src={resetIcon} />
         </button>
 
         <button

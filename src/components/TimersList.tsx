@@ -64,6 +64,18 @@ export function TimersList() {
     }));
   }
 
+  const resetTimer = (timer: ITimer) => {
+    setTimers(prevTimers => ({
+      ...prevTimers,
+      [timer.id]: {
+        ...prevTimers[timer.id],
+        lastStartedAt: new Date(),
+        lastPausedWithSeconds: 0,
+        running: true,
+      }
+    }));
+  }
+
   const deleteTimer = (timer: ITimer) => {
     setTimers(prevTimers => {
       const newTimers = { ...prevTimers };
@@ -81,6 +93,7 @@ export function TimersList() {
           running={timer.running}
           onPause={() => pauseTimer(timer)}
           onResume={() => resumeTimer(timer)}
+          onReset={() => resetTimer(timer)}
           onDelete={() => deleteTimer(timer)}
         />
       ))}
