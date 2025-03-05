@@ -8,10 +8,11 @@ type TimerProps = {
   elapsedSeconds: number,
   running: boolean,
   onPause: () => void,
+  onResume: () => void,
   onDelete: () => void,
 }
 
-export const Timer: React.FC<TimerProps> = ({ elapsedSeconds, running, onPause, onDelete }) => {
+export const Timer: React.FC<TimerProps> = ({ elapsedSeconds, running, onPause, onResume, onDelete }) => {
   const classes = useStyles();
 
   const formattedElapsedTime = useMemo(() => {
@@ -31,7 +32,7 @@ export const Timer: React.FC<TimerProps> = ({ elapsedSeconds, running, onPause, 
       <div className={classes.buttonsContainer}>
         <button
           className={classes.iconButton}
-        // onClick={() => onPause(id)}
+          onClick={running ? onPause : onResume}
         >
 
           {running ? <img src={pauseIcon} /> : <img src={playIcon} />}
@@ -39,7 +40,7 @@ export const Timer: React.FC<TimerProps> = ({ elapsedSeconds, running, onPause, 
 
         <button
           className={classes.iconButton}
-        // onClick={() => onDelete(id)}
+          onClick={onDelete}
         >
           <img src={deleteIcon} />
         </button>
@@ -57,7 +58,6 @@ const useStyles = createUseStyles({
     padding: "12px 20px",
     borderRadius: "12px",
     fontFamily: "-apple-system, BlinkMacSystemFont, sans-serif",
-    maxWidth: "300px",
     margin: "10px auto",
   },
   time: {

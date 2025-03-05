@@ -3,14 +3,18 @@ import { useTimerContext } from "../contexts/timers";
 import { Timer } from "./Timer";
 import { Timer as ITimer } from "../types/Timer";
 import { differenceInSeconds } from "date-fns";
+import { createUseStyles } from "react-jss";
+import { v4 as uuid } from "uuid";
 
 export function TimersList() {
   const { timers, setTimers } = useTimerContext();
   const [, forceRender] = useState<number>(Date.now());
 
+  const classes = useStyles();
+
   useEffect(() => {
     const interval = setInterval(() => {
-      forceRender(Date.now()); // Triggers re-render every second
+      forceRender(Date.now());
     }, 1000);
 
     return () => clearInterval(interval);
@@ -24,17 +28,86 @@ export function TimersList() {
     return timer.lastPausedWithSeconds + differenceInSeconds(new Date(), timer.lastStartedAt);
   };
 
+  const addNewTimer = () => {
+    const newTimerId = uuid();
+    
+    setTimers({
+      ...timers,
+      [newTimerId]: {
+        id: newTimerId,
+        lastPausedWithSeconds: 0,
+        lastStartedAt: new Date(),
+        running: true,
+      }
+    });
+  }
+
+  const pauseTimer = (timer: ITimer) => {
+    setTimers({
+      ...timers,
+      [timer.id]: {
+        ...timers[timer.id],
+        lastPausedWithSeconds: getElapsedSeconds(timer),
+        running: false,
+      }
+    });
+  }
+
+  const resumeTimer = (timer: ITimer) => {
+    setTimers({
+      ...timers,
+      [timer.id]: {
+        ...timers[timer.id],
+        lastStartedAt: new Date(),
+        running: true,
+      }
+    });
+  }
+
   return (
-    <>
+    <div className={classes.timersContainer}>
       {Object.values(timers).map(timer => (
         <Timer
           key={timer.id}
           elapsedSeconds={getElapsedSeconds(timer)}
           running={timer.running}
-          onPause={() => null}
+          onPause={() => pauseTimer(timer)}
+          onResume={() => resumeTimer(timer)}
           onDelete={() => null}
         />
       ))}
-    </>
+
+      <button className={classes.addButton} onClick={addNewTimer}>
+       Add a new timer +
+      </button>
+    </div>
   );
 }
+
+const useStyles = createUseStyles({
+  timersContainer: {
+    maxWidth: "300px",
+  },
+  addButton: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    background: "#e0e0e0",
+    padding: "12px 20px",
+    borderRadius: "12px",
+    fontFamily: "-apple-system, BlinkMacSystemFont, sans-serif",
+    width: "100%",
+    margin: "10px auto",
+    cursor: "pointer",
+    fontWeight: "bold",
+    textAlign: "center",
+    transition: "background 0.2s",
+    "&:hover": {
+        background: "#d6d6d6",
+    },
+    "&:active": {
+        background: "#c2c2c2",
+    }
+}
+
+});
