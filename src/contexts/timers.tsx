@@ -14,19 +14,19 @@ type TimerContextData = {
 const mockData: TimersMap = {
     "49078ac7-4848-419c-b220-bbe65e61fde4": {
         id: "49078ac7-4848-419c-b220-bbe65e61fde4",
-        lastStartedAt: new Date(),
+        lastStartedAt: new Date("2025-03-05T15:22:24.443Z"),
         lastPausedWithSeconds: 0,
         running: true
     },
     "ffcdebc7-ddc7-4efd-81e6-4cd2f27c3b51": {
         id: "ffcdebc7-ddc7-4efd-81e6-4cd2f27c3b51",
-        lastStartedAt: new Date(),
+        lastStartedAt: new Date("2025-03-05T15:21:26.443Z"),
         lastPausedWithSeconds: 0,
         running: true
     },
     "f54c779a-31f0-4c56-9d82-51a736f58649": {
         id: "f54c779a-31f0-4c56-9d82-51a736f58649",
-        lastStartedAt: new Date(),
+        lastStartedAt: new Date("2025-03-05T15:20:06.443Z"),
         lastPausedWithSeconds: 0,
         running: true
     },

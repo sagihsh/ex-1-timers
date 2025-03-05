@@ -10,8 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "date-fns": "^4.1.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-jss": "^10.10.0",
     "usehooks-ts": "^3.1.1"
   },
   "devDependencies": {
