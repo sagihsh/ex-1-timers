@@ -107,7 +107,11 @@ export function TimersList() {
 
 const useStyles = createUseStyles({
   timersContainer: {
+    width: "100%",
     maxWidth: "300px",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
   },
   addButton: {
     display: "flex",

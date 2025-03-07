@@ -17,12 +17,14 @@ type TimerProps = {
 export const Timer: React.FC<TimerProps> = ({ elapsedSeconds, running, onPause, onResume, onReset, onDelete }) => {
   const classes = useStyles();
 
-  const formattedElapsedTime = useMemo(() => {
-    const hours = Math.floor(elapsedSeconds / 60 / 60).toString().padStart(2, "0");
-    const minutes = Math.floor(elapsedSeconds / 60).toString().padStart(2, "0");
-    const secs = (elapsedSeconds % 60).toString().padStart(2, "0");
-
-    return `${hours}:${minutes}:${secs}`;
+  const formattedElapsedTime = useMemo((): string => {
+    const hours = Math.floor(elapsedSeconds / 3600);
+    const minutes = Math.floor((elapsedSeconds % 3600) / 60);
+    const secs = elapsedSeconds % 60;
+  
+    return [hours, minutes, secs]
+      .map(unit => unit.toString().padStart(2, "0"))
+      .join(":");
   }, [elapsedSeconds]);
 
   return (
@@ -68,6 +70,8 @@ const useStyles = createUseStyles({
     borderRadius: "12px",
     fontFamily: "-apple-system, BlinkMacSystemFont, sans-serif",
     margin: "10px auto",
+    width: "100%",
+    boxSizing: "border-box",
   },
   time: {
     fontSize: "18px",
